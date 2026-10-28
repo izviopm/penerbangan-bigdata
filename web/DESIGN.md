@@ -29,6 +29,7 @@ Definisikan sebagai CSS variable di `globals.css`; komponen **tidak boleh** mema
 | `--gold-foreground` | `#0B1B3F` | `#0B1B3F` | Teks di tombol gold |
 | `--orange` | `#F97316` | `#FB923C` | **Tombol sekunder/aksi**, highlight |
 | `--orange-foreground` | `#0B1B3F` | `#0B1B3F` | Teks di tombol orange |
+| `--orange-text` | `#C2410C` | `#FB923C` | **Teks/angka** berwarna oranye (mis. kelas 5). `#F97316` sebagai teks hanya 2,8:1, gagal kontras |
 | `--destructive` | `#DC2626` | `#F87171` | Error, hapus |
 
 Aturan:
@@ -71,6 +72,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
 | Body | 16px, line-height 1.5 | 400 |
 | Caption / label | 13–14px | 500 |
 
+- Tabel di atas berlaku untuk **halaman aplikasi** (dashboard, prediksi, kompensasi, model). **Beranda** (halaman non-aplikasi) memakai skala display hallmark: H1 48–72px, H2 36–48px, ketebalan 400/600/800 saja.
 - Body tidak boleh < 16px di mobile, teks apa pun tidak < 12px.
 - Angka di tabel & KPI pakai `tabular-nums` agar sejajar.
 - **Tanpa eyebrow & label huruf kapital berjarak** (mis. "TANPA DATA LEAKAGE", "BAGIAN 01"): label, caption, kepala tabel, tag, dan menu memakai huruf biasa (sentence case), satu tingkat lebih kecil dari body. *(Floor hallmark 9; berbeda dari gaya PPT.)*

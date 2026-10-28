@@ -1,0 +1,32 @@
+[
+ {
+  "prompt": "Beranda + dashboard Penerbangan Big Data",
+  "shape": "Bento Grid",
+  "theme": "locked (DESIGN.md)",
+  "axes": "light/geometric-sans/chromatic-gold",
+  "hero": "banner",
+  "nav": "edge-aligned bar",
+  "footer": "index columns",
+  "imagery": "the product",
+  "photos": [],
+  "entry": "none",
+  "fingerprint": "7a21",
+  "sections": [
+   "hero",
+   "steps (Cara Kerja)",
+   "bento",
+   "switcher",
+   "table",
+   "statement close",
+   "footer"
+  ],
+  "signature": "Cara Kerja pipeline with real numbers",
+  "waived": [
+   "39b",
+   "44c"
+  ],
+  "scope": "page + app (dashboard)",
+  "date": "2026-10-28",
+  "mode": "build"
+ }
+]

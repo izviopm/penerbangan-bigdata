@@ -1,6 +1,14 @@
+/* Hallmark · shape: Bento Grid (beranda) + app screen (dashboard) · genre: modern-minimal · theme: locked (web/DESIGN.md) · job: try · draw: 7a21
+ * hero: banner · nav: edge-aligned bar (swapped from banner over bar: five real destinations) · footer: index columns · imagery: the product (pipeline, charts from the data) · signature: the Cara Kerja pipeline with the real numbers
+ * axes: light/geometric-sans/chromatic-gold · posture: committed (blue) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V3 · weakest: V, first build in this project so the log is empty; every section is cut from the project's own data instead */
+/* Hallmark · waive 39b · seven stage tiles in the Cara Kerja rail · each tile is a whole pipeline stage with its real figure, tapped to open its tools, input and output */
+/* Hallmark · waive 44c · banner hero ending near 60% of the screen · the Cara Kerja rail, the page signature, starts above the fold by design */
+/* Hallmark · dismissed 58 · the window holds the six-row PM 89/2015 table, whose compensation column quotes the regulation per class and cannot be cut */
+/* Hallmark · dismissed 74 · --secondary #3B82F6 comes from the locked UI_RULES palette chosen with ui-ux-pro-max, kept on purpose */
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 /* Token dari UI_RULES.md §2 (sistem terkunci, lihat DESIGN.md). Komponen hanya memakai token, tidak pernah hex langsung. */
 :root {
@@ -18,10 +26,16 @@
   --gold-foreground: #0b1b3f;
   --orange: #f97316;
   --orange-foreground: #0b1b3f;
+  --orange-text: #c2410c; /* oranye untuk TEKS: 5,2:1 di atas putih (#F97316 hanya 2,8:1) */
   --destructive: #dc2626;
+  --dur-micro: 120ms;
+  --dur-short: 220ms;
+  --dur-long: 420ms;
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.dark {
+/* tema gelap: belum ada tombolnya, token disiapkan sesuai UI_RULES §2 */
+:root[data-theme="dark"] {
   --background: #0b1b3f;
   --foreground: #e6eeff;
   --card: #11265a;
@@ -33,6 +47,7 @@
   --border: #23407f;
   --ring: #93c5fd;
   --orange: #fb923c;
+  --orange-text: #fb923c;
   --destructive: #f87171;
 }
 
@@ -51,8 +66,31 @@
   --color-gold-foreground: var(--gold-foreground);
   --color-orange: var(--orange);
   --color-orange-foreground: var(--orange-foreground);
+  --color-orange-text: var(--orange-text);
   --color-destructive: var(--destructive);
   --font-sans: var(--font-jakarta);
+  --container-site: 82rem;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
 
 /* Floor hallmark §4 & §6 (UI_RULES §11) */
