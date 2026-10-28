@@ -1,5 +1,28 @@
 [
  {
+  "prompt": "Prediksi, Kompensasi, Model (fase 3)",
+  "shape": "app screen",
+  "theme": "locked (DESIGN.md)",
+  "axes": "light/geometric-sans/chromatic-gold",
+  "hero": "none",
+  "nav": "edge-aligned bar, details menu under 60rem",
+  "footer": "index columns",
+  "imagery": "the product",
+  "photos": [],
+  "entry": "none",
+  "fingerprint": "p3",
+  "sections": [
+   "form + result (prediksi)",
+   "form + PM 89 ladder (kompensasi)",
+   "16-model table, confusion pair, hypotheses (model)"
+  ],
+  "signature": "the result card: PM 89 class, passenger right, model scores",
+  "waived": [],
+  "scope": "app",
+  "date": "2026-10-28",
+  "mode": "build"
+ },
+ {
   "prompt": "Beranda + dashboard Penerbangan Big Data",
   "shape": "Bento Grid",
   "theme": "locked (DESIGN.md)",

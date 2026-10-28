@@ -13,8 +13,10 @@ const nextConfig: NextConfig = {
   },
   // onnxruntime-web dimuat dari node_modules apa adanya (memuat .wasm-nya sendiri), bukan di-bundle
   serverExternalPackages: ["onnxruntime-web"],
+  // dua route menjalankan model di server: API publik dan halaman prediksi (form GET)
   outputFileTracingIncludes: {
     "/api/predict": ["./models/model.onnx", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.{wasm,mjs}"],
+    "/prediksi": ["./models/model.onnx", "./node_modules/onnxruntime-web/dist/ort-wasm-simd-threaded.{wasm,mjs}"],
   },
 };
 

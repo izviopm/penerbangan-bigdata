@@ -42,11 +42,11 @@ export default async function Home() {
             Regresi atau klasifikasi: mana yang lebih tepat menebak kategori kompensasi PM 89/2015?
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link href="/dashboard" className={btnPrimary}>
-              Buka dashboard
+            <Link href="/prediksi" className={btnPrimary}>
+              Coba prediksi
             </Link>
-            <Link href="#cara-kerja" className={btnOutline}>
-              Lihat cara kerja
+            <Link href="/dashboard" className={btnOutline}>
+              Buka dashboard
             </Link>
           </div>
         </div>
@@ -148,10 +148,10 @@ export default async function Home() {
       <section className="border-t border-border py-20 md:py-24">
         <div className="mx-auto flex max-w-site flex-col items-start gap-8 px-4 md:px-8 lg:flex-row lg:items-end lg:justify-between">
           <p className="max-w-[22ch] text-4xl font-extrabold tracking-[-0.02em] text-foreground md:text-5xl">
-            Bandingkan maskapai, bandara, dan jam rawan di dashboard.
+            Pilih rute dan jam, lihat kategori delay-nya.
           </p>
-          <Link href="/dashboard" className={btnPrimary}>
-            Buka dashboard
+          <Link href="/prediksi" className={btnPrimary}>
+            Coba prediksi
           </Link>
         </div>
       </section>

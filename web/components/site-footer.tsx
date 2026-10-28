@@ -6,6 +6,9 @@ const COLUMNS = [
     links: [
       { href: "/", label: "Beranda" },
       { href: "/dashboard", label: "Dashboard" },
+      { href: "/prediksi", label: "Prediksi" },
+      { href: "/kompensasi", label: "Kompensasi" },
+      { href: "/model", label: "Model" },
     ],
   },
   {
