@@ -1,0 +1,18 @@
+# data (disimpan di Google Drive, bukan repo)
+data/
+*.zip
+*.parquet
+*.csv
+
+# secret
+.env*
+!.env.example
+
+# python / notebook
+__pycache__/
+.ipynb_checkpoints/
+
+# node / next
+node_modules/
+.next/
+.vercel/
