@@ -4,11 +4,12 @@ Aturan tampilan untuk web `web/` (Next.js + Tailwind + shadcn/ui). Semua halaman
 
 ## 0. Skill desain yang dipakai
 
-Dua skill Claude Code dipakai bersama, dengan pembagian peran yang jelas:
+Tiga skill Claude Code dipakai bersama, dengan pembagian peran yang jelas:
 
 | Skill | Peran | Kapan dipakai |
 |---|---|---|
 | **`/ui-ux-pro-max:ui-ux-pro-max`** | **Sistem desain & aturan UX.** Sumber palet, gaya *Minimalism & Swiss Style*, aturan aksesibilitas, form, chart, dan responsif di file ini. | Saat menentukan/mengubah token, komponen, aksesibilitas, atau mereview UX. Cari aturan spesifik: `search.py "<kata kunci>" --domain ux` / `--stack nextjs`. |
+| **`/humanizer`** | **Teks di layar.** Semua teks yang tampil (judul, deskripsi, tombol, keterangan grafik, pesan error) disunting agar terdengar ditulis orang: tanpa kontras "bukan X tetapi Y", tanpa kalimat penutup dramatis, tanpa bahasa jualan atau klaim berlebihan. Fakta & angka tidak boleh berubah. | Setiap menulis atau mengubah teks halaman, sebelum merge. Bahasa: Indonesia, nada netral dan teknis. |
 | **`/hallmark`** | **Komposisi halaman & kualitas akhir.** Menyusun bentuk tiap halaman (hero, section, "signature"), menjaga agar web tidak terlihat seperti template generik, dan mengecek hasil dengan `sloplint`. | Saat **membangun halaman baru** (beranda, dashboard, prediksi, dst.) dan sebelum merge: `/hallmark audit <path>`. Perubahan kecil pada halaman yang sudah ada **tidak** memakai hallmark, kecuali dipanggil `/hallmark redesign <path>`. |
 
 Aturan main agar keduanya tidak bentrok:
