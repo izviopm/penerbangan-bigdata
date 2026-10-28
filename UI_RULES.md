@@ -113,10 +113,10 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
   - Hasil prediksi/kompensasi: muncul dengan *spring* ringan agar terasa sebagai "jawaban" (reveal satu-satunya di halaman itu).
 
 ### Intro "Cara Kerja Aplikasi" (halaman awal)
-- Animasi alur 7 langkah: Data mentah BTS → Colab/Parquet → Fitur & label → Training → Ekspor ONNX & Supabase → Next.js/Vercel → Pengguna.
-- Bentuk: langkah-langkah tersusun (horizontal di desktop, vertikal di mobile) dihubungkan garis/path. Partikel "data" mengalir sepanjang garis, lalu tiap langkah menyala bergantian (±0.6s per langkah, total < 6s).
-- Setiap langkah: ikon Lucide dalam lingkaran biru, judul, satu kalimat, dan satu angka nyata. Langkah aktif diberi aksen orange; langkah terakhir (website) diberi aksen gold.
-- Ada tombol "Putar ulang" (outline) dan "Lewati" (ghost). Langkah bisa diklik untuk membuka detail (animate-ui popover/dialog).
+- Alur 6 langkah: Ambil data BTS → Simpan ringkas (Parquet di Google Drive) → Bersihkan & beri kelas PM 89 → Uji 16 model → Kirim ke Supabase & ONNX → Tampilkan di website.
+- Beranda: *sticky diptych*. Kiri judul + tautan menempel, kanan linimasa vertikal; garis terisi mengikuti scroll (CSS `animation-timeline`), setiap kartu muncul saat terlihat (`data-reveal`). **Tanpa autoplay**: pengguna membaca dengan kecepatannya sendiri.
+- `/cara-kerja`: satu bab per langkah. Diagram alur (kotak + panah) muncul berurutan saat discroll; kotak terakhir berwarna primary. Nomor langkah dalam lingkaran gold.
+- Efek scroll dipakai di seluruh beranda atas permintaan pengguna (28 Okt 2026), menggantikan aturan "satu reveal per halaman". Tetap wajib: konten terlihat tanpa JavaScript (kelas `.js`), dan `prefers-reduced-motion` mematikan semua gerak.
 - Data animasi **hanya** dari `web/content/pipeline.ts` + `pipeline-stats.json`; jangan hardcode teks di komponen (lihat PRD §8).
 - Reduced motion: semua langkah langsung tampil statis.
 

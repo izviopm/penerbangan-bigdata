@@ -5,6 +5,7 @@ const COLUMNS = [
     title: "Halaman",
     links: [
       { href: "/", label: "Beranda" },
+      { href: "/cara-kerja", label: "Cara kerja" },
       { href: "/dashboard", label: "Dashboard" },
       { href: "/prediksi", label: "Prediksi" },
       { href: "/kompensasi", label: "Kompensasi" },

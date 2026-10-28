@@ -77,11 +77,11 @@ Rumus kelas kompensasi PM 89/2015:
 ## 5. Fitur
 
 ### F1. Intro "Cara Kerja Aplikasi" (wajib, P0)
-Animasi di halaman awal yang memperlihatkan langkah [1]–[7] di atas secara berurutan.
-- Setiap langkah: ikon, judul, satu kalimat penjelasan, dan angka nyata (mis. "14,2 juta baris", "Parquet 1,1 GB", "macro F1 0,xx").
-- Diputar otomatis saat halaman dibuka, lalu bisa diulang atau dilewati ("Lewati").
-- Pengguna bisa klik satu langkah untuk melihat detail (tools, input, output).
-- Hormati `prefers-reduced-motion`: tampilkan semua langkah statis tanpa animasi.
+Enam langkah dari data BTS sampai website, ditulis untuk orang awam (revisi 28 Okt 2026: animasi otomatis terlalu cepat dibaca, langkah "Anda" dihapus).
+- **Beranda:** linimasa 6 langkah yang muncul mengikuti scroll (garis terisi saat digulir). Setiap langkah: judul, angka nyata, satu kalimat, dan tautan ke penjelasannya. Tidak ada autoplay.
+- **Halaman `/cara-kerja`:** satu bab per langkah berisi diagram alur beranimasi, "Apa yang dikerjakan", "Kenapa begini" (alasan memilih BTS, Parquet, Google Drive, Supabase, 16 model, ONNX), fakta angka, dan batasan.
+- Semua singkatan dijelaskan saat pertama muncul (mis. BTS = Bureau of Transportation Statistics).
+- Hormati `prefers-reduced-motion` dan tetap terbaca tanpa JavaScript: tampilkan semua langkah statis tanpa animasi.
 - **Isi diambil dari satu file sumber `web/content/pipeline.ts`** (lihat §8), bukan di-hardcode di komponen.
 
 ### F2. Dashboard (P0)
@@ -127,7 +127,7 @@ Perbandingan Pendekatan A vs B, skenario S1–S4, tabel metrik (MAE, RMSE, R², 
 
 Animasi F1 adalah dokumentasi hidup. Agar tidak basi:
 
-1. Satu sumber kebenaran: **`web/content/pipeline.ts`** berisi daftar langkah (judul, deskripsi, tools, input/output, angka). Komponen animasi hanya membaca file ini.
+1. Satu sumber kebenaran: **`web/content/pipeline.ts`** berisi daftar langkah (judul, ringkasan, diagram alur, apa/kenapa, fakta, batasan, angka). Beranda dan `/cara-kerja` hanya membaca file ini.
 2. Angka (jumlah baris, ukuran Parquet, metrik model) diisi dari **`web/content/pipeline-stats.json`** yang di-*generate* otomatis oleh notebook ekspor (`notebooks/04_export.ipynb`) setiap kali dijalankan.
 3. Setiap perubahan pada notebook, skema Supabase, model, atau API **wajib** ikut mengubah `pipeline.ts` (dan diagram §4 di file ini serta README) di commit/PR yang sama.
 4. Checklist PR berisi: "Apakah alur data berubah? Jika ya, `pipeline.ts`, PRD §4, dan README sudah diperbarui."
