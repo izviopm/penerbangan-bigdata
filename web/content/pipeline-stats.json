@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-10-28 12:57",
+  "ingest": {
+    "period": "2023-2025",
+    "months": 36,
+    "raw_columns": 110,
+    "kept_columns": 28,
+    "rows": 20928579,
+    "cancelled": 287134,
+    "diverted": 53309,
+    "parquet_mb": 247.8
+  },
+  "eda": {
+    "rows_operated": 20588136,
+    "airlines": 15,
+    "origins": 362,
+    "pct_delay30": 13.76,
+    "class_pct": {
+      "0": 86.243,
+      "1": 6.462,
+      "2": 4.348,
+      "3": 1.509,
+      "4": 0.647,
+      "5": 0.79
+    },
+    "imbalance_ratio_0_vs_5": 109.1
+  },
+  "model": {
+    "n_models": 16,
+    "n_sample": 999709,
+    "n_train": 799767,
+    "n_test": 199942,
+    "web_model": {
+      "approach": "classification",
+      "scenario": "S4",
+      "algorithm": "xgb"
+    },
+    "accuracy": 0.481,
+    "macro_f1": 0.169,
+    "recall_class_5": 0.166,
+    "precision_class_5": 0.017
+  },
+  "export": {
+    "onnx_mb": 29.2,
+    "parity_max_diff": 1.1920928955078125e-07,
+    "supabase_rows": {
+      "airlines": 15,
+      "airports": 362,
+      "monthly_airline_stats": 528,
+      "monthly_origin_stats": 12164,
+      "hour_dow_stats": 168,
+      "model_results": 16
+    }
+  }
+}
