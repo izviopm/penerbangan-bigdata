@@ -38,15 +38,19 @@ export type ModelRow = {
   };
 };
 
-/** PostgREST membatasi 1.000 baris per permintaan; ambil semua halaman. */
+/** PostgREST membatasi 1.000 baris per permintaan: hitung dulu, lalu ambil semua halaman sekaligus (paralel). */
 async function fetchAll<T>(table: string, columns: string): Promise<T[]> {
-  const rows: T[] = [];
-  for (let from = 0; ; from += 1000) {
-    const { data, error } = await supabase.from(table).select(columns).range(from, from + 999);
-    if (error) throw new Error(`Supabase ${table}: ${error.message}`);
-    rows.push(...(data as T[]));
-    if (data.length < 1000) return rows;
-  }
+  const { count, error } = await supabase.from(table).select("*", { count: "exact", head: true });
+  if (error) throw new Error(`Supabase ${table}: ${error.message}`);
+  const pages = await Promise.all(
+    Array.from({ length: Math.ceil((count ?? 0) / 1000) }, (_, p) =>
+      supabase.from(table).select(columns).range(p * 1000, p * 1000 + 999),
+    ),
+  );
+  return pages.flatMap((r) => {
+    if (r.error) throw new Error(`Supabase ${table}: ${r.error.message}`);
+    return r.data as T[];
+  });
 }
 
 const STAT = "year, month, flights, cancelled, diverted, avg_dep_delay, class_0, class_1, class_2, class_3, class_4, class_5";
