@@ -13,7 +13,7 @@ Dibuat oleh **Kelompok 2 MKOM Universitas Budi Luhur**, mata kuliah Manajemen Bi
 ## Cara Kerja Aplikasi
 
 ```
-Data mentah BTS (CSV, 2023–2025, ±21 juta baris)
+Data mentah BTS (CSV, 2023–2025, 20,9 juta baris)
   → Google Colab: CSV → Parquet di Google Drive (PySpark / DuckDB)
   → Bersihkan + buat fitur + label kelas kompensasi 0–5
   → Latih model: Regresi vs Klasifikasi (LR, DT, RF, XGBoost)
@@ -54,7 +54,7 @@ penerbangan-bigdata/
 1. Buka notebook di `notebooks/` lewat Colab (File → Open notebook → GitHub).
 2. Hubungkan Google Drive; data mentah & Parquet disimpan di folder Drive bersama tim, **bukan** di repo.
 3. Jalankan berurutan: `01_ingest` → `02_eda` → `03_model` → `04_export`.
-4. `04_export` menghasilkan `model.onnx`, `pipeline-stats.json`, dan mengunggah agregat ke Supabase.
+4. `04_export` menghasilkan folder `export/` (`model.onnx`, `encoders.json`, `parity_cases.json`, `pipeline-stats.json`) dan mengunggah agregat ke Supabase. Butuh secret Colab `SUPABASE_DB_URL` (URI *Session pooler*).
 
 ### 2. Web (lokal)
 ```bash

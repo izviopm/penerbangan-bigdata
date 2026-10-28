@@ -14,7 +14,7 @@ Keterlambatan penerbangan merugikan penumpang dan maskapai. Di Indonesia, **PM 8
 
 Projek ini menunjukkan **pengelolaan big data end-to-end**: jutaan baris data penerbangan mentah diolah dengan Python, dipakai untuk melatih model machine learning, lalu disajikan sebagai web yang bisa diakses publik.
 
-Data yang dipakai adalah **BTS On-Time Performance** (AS, 2023–2025, ±21 juta baris). Kelas kompensasi PM 89/2015 diterapkan sebagai studi kasus.
+Data yang dipakai adalah **BTS On-Time Performance** (AS, 2023–2025, 20.928.579 baris). Kelas kompensasi PM 89/2015 diterapkan sebagai studi kasus.
 
 ## 2. Tujuan
 
@@ -51,7 +51,7 @@ Data yang dipakai adalah **BTS On-Time Performance** (AS, 2023–2025, ±21 juta
         │  LR/LogReg, DT, RF, XGBoost × skenario S1–S4, split 80:20 + 5-fold CV
         ▼
 [5] Ekspor
-        ├─ model terbaik (XGBoost) → model.onnx → disimpan di web/
+        ├─ model web: B-S4 XGBoost (klasifikasi + class weight) → model.onnx → disimpan di web/
         └─ tabel agregat + sampel → Supabase (Postgres)
         ▼
 [6] Next.js di Vercel
@@ -105,7 +105,8 @@ Perbandingan Pendekatan A vs B, skenario S1–S4, tabel metrik (MAE, RMSE, R², 
 
 - **Biaya:** Rp0. Google Colab free, Supabase free, dan Vercel Hobby.
 - **Performa:** halaman pertama tampil < 2,5 detik (LCP); prediksi < 1 detik.
-- **Ukuran:** model ONNX diusahakan < 20 MB; data Supabase hanya beberapa MB (agregat + sampel).
+- **Ukuran:** model ONNX 29,2 MB (400 pohon × 6 kelas; batas aman < 50 MB untuk Vercel & GitHub); data Supabase hanya beberapa MB (agregat).
+- **Model web:** B-S4 XGBoost, karena satu-satunya pendekatan yang mendeteksi kelas 5 (recall 0,166; macro F1 0,169). A-S1 XGBoost punya macro F1 lebih tinggi (0,180) tetapi tidak pernah memprediksi kelas 5.
 - **Konsistensi:** preprocessing di web harus identik dengan Python; dibuktikan dengan *parity test* (input sama → kelas sama).
 - **Tampilan:** mengikuti [UI_RULES.md](UI_RULES.md).
 - **Keamanan:** tidak ada kunci di repo; kunci Supabase di Environment Variables Vercel; tabel Supabase read-only untuk publik (RLS).
@@ -149,5 +150,5 @@ Animasi F1 adalah dokumentasi hidup. Agar tidak basi:
 | Colab kehabisan RAM / terputus | Proses per bulan, simpan Parquet bertahap, latih pada sampel bertingkat 2–3 juta baris |
 | Supabase free di-pause karena tidak aktif | Buka/ping project beberapa hari sebelum presentasi |
 | Preprocessing web ≠ Python | Parity test sebelum deploy |
-| Model ONNX terlalu besar | Pakai XGBoost (bukan RF), batasi jumlah/depth pohon |
+| Model ONNX terlalu besar | Pakai XGBoost (bukan RF); kalau > 50 MB, kurangi `n_estimators` di 03_model |
 | Teks kompensasi PM 89 salah | Verifikasi ke JDIH Kemenhub sebelum rilis |
