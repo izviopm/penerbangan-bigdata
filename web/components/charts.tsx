@@ -43,7 +43,7 @@ export function LineChart({ values, labels, marks = [], ticks, height = 220, tit
           </text>
         </g>
       ))}
-      <path className="draw" pathLength={1} d={d} fill="none" stroke="var(--secondary)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
+      <path d={d} fill="none" stroke="var(--secondary)" strokeWidth={2} strokeLinejoin="round" strokeLinecap="round" />
       {values.map((v, i) => (
         <circle key={i} cx={x(i)} cy={y(v)} r={6} fill="transparent">
           <title>{`${labels[i]}: ${pct(v)}`}</title>

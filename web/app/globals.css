@@ -3,7 +3,6 @@
  * axes: light/geometric-sans/chromatic-gold · posture: committed (blue) · contrast: pass · fold: pass · v2.0.0 */
 /* Hallmark · pre-emit critique: P4 H4 E4 S5 R4 V3 · weakest: V, first build in this project so the log is empty; every section is cut from the project's own data instead */
 /* Hallmark · waive 39b · six steps in the Cara kerja timeline · each is a whole pipeline stage with its real figure and a link to its chapter on /cara-kerja */
-/* Hallmark · waive F8 · scroll reveals on every home section and a scroll-filled timeline spine · the user asked for per-section scroll animation; content is visible without JS and under reduced motion */
 /* Hallmark · waive 44c · banner hero ending near 60% of the screen · the Cara Kerja rail, the page signature, starts above the fold by design */
 /* Hallmark · dismissed 58 · the window holds the six-row PM 89/2015 table, whose compensation column quotes the regulation per class and cannot be cut */
 /* Hallmark · dismissed F25 · on /model the scenario names repeat on all 16 rows at 1440; the phone shows the S1 to S4 codes plus a one-line legend under the table */
@@ -86,57 +85,35 @@ p {
   text-wrap: pretty;
 }
 
-/* ---------- Animasi scroll (UI_RULES §6). Dasar: semua terlihat. Hanya disembunyikan
-   di bawah .js (diset skrip di <head>) dan hanya bila pengguna tidak meminta reduced motion. */
+/* ---------- Gerak (hallmark craft §5): motion.dev menjalankan animasinya (components/reveal.tsx).
+   CSS hanya menyiapkan keadaan awal, dan hanya di bawah .js tanpa reduced motion,
+   jadi tanpa JavaScript semuanya tetap terlihat. */
 @media (prefers-reduced-motion: no-preference) {
-  .js [data-reveal] {
+  .js .flap,
+  .js [data-reveal]:not(.is-seen) [data-reveal-item],
+  .js [data-reveal]:not(.is-seen):not(:has([data-reveal-item])) {
     opacity: 0;
-    transform: translateY(16px);
-    transition:
-      opacity 640ms var(--ease-out),
-      transform 640ms var(--ease-out);
-    transition-delay: calc(var(--i, 0) * 90ms);
   }
-  .js [data-reveal].is-seen {
-    opacity: 1;
-    transform: none;
-  }
+}
+.flap {
+  transform-origin: 50% 50%;
+}
 
-  /* garis grafik & panah diagram tergambar (path dengan pathLength="1") */
-  .js [data-reveal] .draw {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    transition: stroke-dashoffset 1400ms var(--ease-out) 240ms;
-  }
-  .js [data-reveal].is-seen .draw {
-    stroke-dashoffset: 0;
-  }
-
-  /* diagram alur: node & panah muncul berurutan setiap kali diagram dipasang */
-  .flow-node {
-    animation: flow-node 560ms var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 260ms);
-  }
-  .flow-edge {
-    stroke-dasharray: 1;
-    animation: flow-edge 520ms var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 260ms + 120ms);
-  }
-  .js [data-reveal]:not(.is-seen) :is(.flow-node, .flow-edge) {
-    animation-play-state: paused;
-  }
-
-  /* papan keberangkatan: tiap digit berputar sekali saat halaman dibuka */
-  .flap {
-    animation: flap 520ms var(--ease-out) both;
-    animation-delay: calc(var(--i, 0) * 45ms + 200ms);
-    transform-origin: 50% 50%;
+/* nomor langkah beranda: berisi saat kartunya terlihat */
+[data-step-dot] {
+  transition:
+    background-color var(--dur-long) var(--ease-out),
+    color var(--dur-long) var(--ease-out);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal]:not(.is-seen) [data-step-dot] {
+    background: var(--card);
+    color: var(--foreground);
   }
 }
 
-/* garis linimasa Cara kerja: dasar penuh; terisi mengikuti scroll bila browser mendukung */
-.spine::before,
-.spine::after {
+/* garis linimasa Cara kerja di beranda (statis) */
+.spine::before {
   content: "";
   position: absolute;
   left: 1.5rem;
@@ -145,55 +122,6 @@ p {
   width: 2px;
   translate: -1px 0;
   background: var(--border);
-}
-.spine::after {
-  background: var(--secondary);
-  transform-origin: top;
-}
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .spine {
-      view-timeline: --spine block;
-    }
-    .spine::after {
-      animation: spine-fill linear both;
-      animation-timeline: --spine;
-      animation-range: entry 30% exit 60%;
-    }
-  }
-}
-@keyframes spine-fill {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-
-@keyframes flow-node {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-}
-@keyframes flow-edge {
-  from {
-    stroke-dashoffset: 1;
-  }
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-@keyframes flap {
-  0% {
-    transform: perspective(240px) rotateX(-90deg);
-    opacity: 0.2;
-  }
-  60% {
-    transform: perspective(240px) rotateX(12deg);
-    opacity: 1;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

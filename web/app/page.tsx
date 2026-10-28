@@ -63,7 +63,7 @@ export default async function Home() {
 
           <figure className="min-w-0 rounded-2xl bg-foreground p-5 md:p-7">
             <figcaption className="text-sm">Penerbangan domestik Amerika Serikat yang dianalisis</figcaption>
-            <p className="mt-4 flex gap-0.5 font-extrabold sm:gap-1 tabular-nums text-gold" aria-label={num(stats.ingest.rows)}>
+            <p className="mt-4 flex gap-0.5 font-extrabold [perspective:240px] sm:gap-1 tabular-nums text-gold" aria-label={num(stats.ingest.rows)}>
               {num(stats.ingest.rows)
                 .split("")
                 .map((c, i) =>
@@ -76,7 +76,7 @@ export default async function Home() {
                       key={i}
                       aria-hidden
                       className="flap grid h-11 w-7 place-items-center rounded-md bg-primary text-2xl sm:h-12 sm:w-8 sm:text-3xl md:h-16 md:w-11 md:text-5xl"
-                      style={{ "--i": i } as React.CSSProperties}
+                     
                     >
                       {c}
                     </span>
@@ -118,7 +118,7 @@ export default async function Home() {
             Yang terlihat dari {juta(stats.eda.rows_operated)} penerbangan
           </h2>
           <div className="mt-12 grid gap-6 lg:grid-cols-12">
-            <figure data-reveal className="min-w-0 rounded-xl border border-border bg-card p-6 lg:col-span-8 lg:p-8">
+            <figure className="min-w-0 rounded-xl border border-border bg-card p-6 lg:col-span-8 lg:p-8">
               <h3 className="text-2xl font-extrabold text-foreground">Delay naik sepanjang hari</h3>
               <div className="mt-6">
                 <LineChart
@@ -131,15 +131,15 @@ export default async function Home() {
               </div>
               <figcaption className="mt-3 text-sm text-muted-foreground">Delay minimal 30 menit menurut jam jadwal berangkat, semua hari.</figcaption>
             </figure>
-            <div data-reveal style={{ "--i": 1 } as React.CSSProperties} className="flex min-w-0 flex-col justify-between rounded-xl border border-border bg-card p-6 lg:col-span-4 lg:p-8">
+            <div className="flex min-w-0 flex-col justify-between rounded-xl border border-border bg-card p-6 lg:col-span-4 lg:p-8">
               <p className="text-6xl font-extrabold tracking-[-0.03em] tabular-nums text-primary">{pct(classPct[0])}</p>
               <p className="mt-6 text-lg text-foreground">penerbangan tepat waktu atau terlambat kurang dari 30 menit (kelas 0).</p>
             </div>
-            <div data-reveal className="flex min-w-0 flex-col justify-between rounded-xl border border-border bg-card p-6 lg:col-span-4 lg:p-8">
+            <div className="flex min-w-0 flex-col justify-between rounded-xl border border-border bg-card p-6 lg:col-span-4 lg:p-8">
               <p className="text-6xl font-extrabold tracking-[-0.03em] tabular-nums text-orange-text">{dec(stats.eda.imbalance_ratio_0_vs_5, 0)} kali</p>
               <p className="mt-6 text-lg text-foreground">lebih banyak kelas 0 daripada kelas 5. Model yang selalu menebak kelas 0 sudah mendapat akurasi 86%.</p>
             </div>
-            <figure data-reveal style={{ "--i": 1 } as React.CSSProperties} className="min-w-0 rounded-xl border border-border bg-card p-6 lg:col-span-8 lg:p-8">
+            <figure className="min-w-0 rounded-xl border border-border bg-card p-6 lg:col-span-8 lg:p-8">
               <h3 className="text-2xl font-extrabold text-foreground">OTP Indonesia turun dari 86% ke 72%</h3>
               <div className="mt-6">
                 <LineChart values={OTP.values} labels={OTP.labels} marks={[0, 3]} yMin={60} height={180} title="On-time performance penerbangan Indonesia 2020 sampai 2023" />
@@ -157,7 +157,7 @@ export default async function Home() {
         <div className="mx-auto max-w-site px-4 md:px-8">
           <h2 className="max-w-[24ch] text-4xl font-extrabold tracking-[-0.02em] text-foreground md:text-5xl">Hanya satu pendekatan menangkap kelas 5</h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Bandingkan recall per kelas dua model XGBoost terbaik dari 16 model yang diuji.</p>
-          <div data-reveal className="mt-12">
+          <div className="mt-12">
             <ModelSwitcher views={views} />
           </div>
         </div>
@@ -168,7 +168,7 @@ export default async function Home() {
         <div className="mx-auto max-w-site px-4 md:px-8">
           <h2 className="max-w-[24ch] text-4xl font-extrabold tracking-[-0.02em] text-foreground md:text-5xl">Kategori kompensasi PM 89/2015</h2>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Kelas 1 sampai 5 mengikuti Pasal 3 dan Pasal 9. Kelas 0 kami tambahkan untuk delay di bawah 30 menit.</p>
-          <div data-reveal className="mt-12 overflow-x-auto">
+          <div className="mt-12 overflow-x-auto">
             <table className="w-full min-w-[40rem] text-left">
               <thead>
                 <tr className="border-b border-border text-sm text-muted-foreground">

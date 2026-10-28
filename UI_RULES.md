@@ -114,9 +114,9 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
 
 ### Intro "Cara Kerja Aplikasi" (halaman awal)
 - Alur 6 langkah: Ambil data BTS → Simpan ringkas (Parquet di Google Drive) → Bersihkan & beri kelas PM 89 → Uji 16 model → Kirim ke Supabase & ONNX → Tampilkan di website.
-- Beranda: *sticky diptych*. Kiri judul + tautan menempel, kanan linimasa vertikal; garis terisi mengikuti scroll (CSS `animation-timeline`), setiap kartu muncul saat terlihat (`data-reveal`). **Tanpa autoplay**: pengguna membaca dengan kecepatannya sendiri.
-- `/cara-kerja`: satu bab per langkah. Diagram alur (kotak + panah) muncul berurutan saat discroll; kotak terakhir berwarna primary. Nomor langkah dalam lingkaran gold.
-- Efek scroll dipakai di seluruh beranda atas permintaan pengguna (28 Okt 2026), menggantikan aturan "satu reveal per halaman". Tetap wajib: konten terlihat tanpa JavaScript (kelas `.js`), dan `prefers-reduced-motion` mematikan semua gerak.
+- Beranda: *sticky diptych* (hallmark scroll-choreography §4). Kiri judul + tautan menempel, kanan linimasa vertikal; tiap kartu muncul saat terlihat dan nomornya terisi. **Tanpa autoplay.**
+- `/cara-kerja`: satu bab per langkah, dibuka pita biru tua (primary) berisi nomor gold, judul, ringkasan, dan diagram alur (kotak navy, panah gold, kotak terakhir gold). Bar langkah menempel di atas; penanda aktifnya bergeser (animate-ui Highlight).
+- Anggaran gerak mengikuti hallmark, bukan selera: per halaman satu efek masuk di hero, **satu** pola reveal/scroll, sinyal hover, dan perubahan state (tab, penanda aktif). Animasi dijalankan motion.dev (`components/reveal.tsx`), tab memakai animate-ui. Tanpa JavaScript konten tetap terlihat; `prefers-reduced-motion` mematikan semua gerak.
 - Data animasi **hanya** dari `web/content/pipeline.ts` + `pipeline-stats.json`; jangan hardcode teks di komponen (lihat PRD §8).
 - Reduced motion: semua langkah langsung tampil statis.
 
