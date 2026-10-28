@@ -13,7 +13,7 @@ Dibuat oleh **Kelompok 2 MKOM Universitas Budi Luhur**, mata kuliah Manajemen Bi
 ## Cara Kerja Aplikasi
 
 ```
-Data mentah BTS (CSV, 2024–2025, ±14 juta baris)
+Data mentah BTS (CSV, 2023–2025, ±21 juta baris)
   → Google Colab: CSV → Parquet di Google Drive (PySpark / DuckDB)
   → Bersihkan + buat fitur + label kelas kompensasi 0–5
   → Latih model: Regresi vs Klasifikasi (LR, DT, RF, XGBoost)
@@ -78,5 +78,5 @@ Import repo ini di Vercel, set **Root Directory = `web`**, lalu isi Environment 
 
 ## Data
 
-- U.S. Bureau of Transportation Statistics (BTS), *Airline On-Time Performance*, periode 2024–2025.
+- U.S. Bureau of Transportation Statistics (BTS), *Airline On-Time Performance*, periode 2023–2025.
 - Kelas kompensasi mengacu Peraturan Menteri Perhubungan No. PM 89 Tahun 2015.

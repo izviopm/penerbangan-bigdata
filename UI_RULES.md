@@ -108,7 +108,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
 ## 7. Grafik & Data
 
 - Warna seri utama biru (`--secondary`), pembanding orange; kelas kompensasi 0–5 pakai gradasi biru → orange, **kelas 5 (ganti rugi) selalu orange** agar menonjol.
-- Setiap chart: judul, label sumbu, legend (jika >1 seri), tooltip, dan sumber data ("BTS On-Time Performance 2024–2025").
+- Setiap chart: judul, label sumbu, legend (jika >1 seri), tooltip, dan sumber data ("BTS On-Time Performance 2023–2025").
 - Tampilkan skeleton saat loading; ruang chart dipesan dari awal (CLS < 0.1).
 - Sediakan ringkasan teks/tabel untuk chart penting (aksesibilitas).
 

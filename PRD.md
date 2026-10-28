@@ -14,7 +14,7 @@ Keterlambatan penerbangan merugikan penumpang dan maskapai. Di Indonesia, **PM 8
 
 Projek ini menunjukkan **pengelolaan big data end-to-end**: jutaan baris data penerbangan mentah diolah dengan Python, dipakai untuk melatih model machine learning, lalu disajikan sebagai web yang bisa diakses publik.
 
-Data yang dipakai adalah **BTS On-Time Performance** (AS, 2024–2025, ±14 juta baris). Kelas kompensasi PM 89/2015 diterapkan sebagai studi kasus.
+Data yang dipakai adalah **BTS On-Time Performance** (AS, 2023–2025, ±21 juta baris). Kelas kompensasi PM 89/2015 diterapkan sebagai studi kasus.
 
 ## 2. Tujuan
 
@@ -38,7 +38,7 @@ Data yang dipakai adalah **BTS On-Time Performance** (AS, 2024–2025, ±14 juta
 ## 4. Alur Sistem
 
 ```
-[1] Data mentah BTS (CSV per bulan, 2024–2025)
+[1] Data mentah BTS (CSV per bulan, 2023–2025)
         │  unduh, pilih ±15 kolom
         ▼
 [2] Google Colab + Google Drive: CSV → Parquet (PySpark / DuckDB)
@@ -135,7 +135,7 @@ Animasi F1 adalah dokumentasi hidup. Agar tidak basi:
 
 | Target | Pekerjaan |
 |---|---|
-| Minggu 1 (s.d. 8 Nov) | Unduh data 2024–2025, notebook ingest → Parquet, EDA |
+| Minggu 1 (s.d. 8 Nov) | Unduh data 2023–2025, notebook ingest → Parquet, EDA |
 | Minggu 2 (s.d. 15 Nov) | Fitur + labeling, training 16 model, pilih model terbaik |
 | Minggu 3 (s.d. 22 Nov) | Ekspor ONNX + agregat Supabase; setup Next.js, intro Cara Kerja, dashboard |
 | Minggu 4 (s.d. 29 Nov) | Halaman prediksi + parity test, Tentang Model, polishing UI |
