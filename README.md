@@ -45,7 +45,8 @@ penerbangan-bigdata/
 - **Pengolahan data:** Python, Google Colab, Google Drive, PySpark / DuckDB, Parquet.
 - **ML:** scikit-learn, XGBoost, ONNX.
 - **Database:** Supabase (Postgres).
-- **Web:** Next.js, TypeScript, Tailwind, shadcn/ui, motion.dev, animate-ui, onnxruntime-node.
+- **Web:** Next.js, TypeScript, Tailwind, shadcn/ui, motion.dev, animate-ui, onnxruntime-web.
+- **Live:** https://penerbangan-bigdata.vercel.app (auto-deploy dari branch `main`, Root Directory `web`).
 - **Hosting:** Vercel.
 
 ## Menjalankan

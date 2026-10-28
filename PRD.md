@@ -56,7 +56,7 @@ Data yang dipakai adalah **BTS On-Time Performance** (AS, 2023–2025, 20.928.57
         ▼
 [6] Next.js di Vercel
         ├─ dashboard membaca agregat dari Supabase
-        └─ API /api/predict menjalankan model.onnx (onnxruntime-node)
+        └─ API /api/predict menjalankan model.onnx (onnxruntime-web/WASM di server)
         ▼
 [7] Pengguna membuka website
 ```
@@ -119,7 +119,7 @@ Perbandingan Pendekatan A vs B, skenario S1–S4, tabel metrik (MAE, RMSE, R², 
 | Machine learning | scikit-learn, XGBoost, skl2onnx / onnxmltools |
 | Database | Supabase (Postgres) |
 | Web | Next.js (App Router), TypeScript, Tailwind, shadcn/ui, motion.dev, animate-ui |
-| Inferensi | onnxruntime-node di API route |
+| Inferensi | onnxruntime-web (WASM) di API route; onnxruntime-node 307 MB melebihi batas fungsi Vercel 250 MB |
 | Hosting | Vercel |
 | Kode | GitHub (monorepo ini) |
 
