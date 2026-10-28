@@ -1,7 +1,21 @@
 # UI Rules — Penerbangan Big Data
 
 Aturan tampilan untuk web `web/` (Next.js + Tailwind + shadcn/ui). Semua halaman dan komponen wajib mengikuti file ini.
-Dasar: rekomendasi skill **ui-ux-pro-max** (gaya *Minimalism & Swiss Style* untuk dashboard analitik), disesuaikan dengan pilihan tim.
+
+## 0. Skill desain yang dipakai
+
+Dua skill Claude Code dipakai bersama, dengan pembagian peran yang jelas:
+
+| Skill | Peran | Kapan dipakai |
+|---|---|---|
+| **`/ui-ux-pro-max:ui-ux-pro-max`** | **Sistem desain & aturan UX.** Sumber palet, gaya *Minimalism & Swiss Style*, aturan aksesibilitas, form, chart, dan responsif di file ini. | Saat menentukan/mengubah token, komponen, aksesibilitas, atau mereview UX. Cari aturan spesifik: `search.py "<kata kunci>" --domain ux` / `--stack nextjs`. |
+| **`/hallmark`** | **Komposisi halaman & kualitas akhir.** Menyusun bentuk tiap halaman (hero, section, "signature"), menjaga agar web tidak terlihat seperti template generik, dan mengecek hasil dengan `sloplint`. | Saat **membangun halaman baru** (beranda, dashboard, prediksi, dst.) dan sebelum merge: `/hallmark audit <path>`. Perubahan kecil pada halaman yang sudah ada **tidak** memakai hallmark, kecuali dipanggil `/hallmark redesign <path>`. |
+
+Aturan main agar keduanya tidak bentrok:
+1. **Sistem terkunci.** Palet, font, radius, dan library animasi di file ini **tidak** boleh diganti tema dari hallmark. Saat folder `web/` dibuat, salin bagian 2–6 file ini ke **`web/DESIGN.md`**; hallmark membaca `DESIGN.md` sebagai sistem terkunci, sehingga ia tidak membagikan (*deal*) tema sendiri.
+2. **Floor hallmark wajib** (lihat bagian 11) — kecuali yang bertentangan dengan pilihan eksplisit tim di file ini; pengecualian dicatat sebagai *waive* di stamp CSS.
+3. **Isi nyata saja.** Hallmark melarang angka/testimoni karangan; web ini hanya menampilkan angka dari `pipeline-stats.json` dan Supabase.
+4. Hallmark menanyakan *material, audience, use, tone* sekali sebelum membangun. Jawaban baku proyek ini: material = data & grafik nyata BTS 2023–2025 + model; audience = dosen & kelas (penumpang/maskapai sebagai ilustrasi); use = paham alur big data lalu mencoba prediksi; tone = *technical, utilitarian*.
 
 ## 1. Karakter
 
@@ -73,6 +87,9 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
 
 - Body tidak boleh < 16px di mobile, teks apa pun tidak < 12px.
 - Angka di tabel & KPI pakai `tabular-nums` agar sejajar.
+- **Tanpa eyebrow & label huruf kapital berjarak** (mis. "TANPA DATA LEAKAGE", "BAGIAN 01"): label, caption, kepala tabel, tag, dan menu memakai huruf biasa (sentence case), satu tingkat lebih kecil dari body. *(Floor hallmark 9; berbeda dari gaya PPT.)*
+- Jangan gabungkan info dengan titik tengah (`2024 · BTS · 20,9 jt`); pakai baris/kolom terpisah. *(Floor 10)*
+- Jangan satu kata miring di tengah judul tegak. *(Floor 3)*
 
 ## 5. Layout & Spacing
 
@@ -87,11 +104,10 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
 - Library: **Motion** (`motion`, import dari `motion/react`) untuk animasi custom; **animate-ui** untuk komponen siap pakai (dipasang lewat registry shadcn, mis. `npx shadcn@latest add @animate-ui/<komponen>`). Jangan tambah library animasi lain (GSAP, framer-motion lama, react-spring).
 - Utamakan komponen animate-ui; tulis `motion.*` sendiri hanya jika tidak ada padanannya.
 - Durasi: micro-interaction **150–250ms**, masuk elemen/kartu **300–450ms**, keluar lebih cepat dari masuk (±70% durasinya).
-- Pola standar:
-  - Kartu KPI & grid chart: muncul *stagger* (opacity 0→1, y 16→0, jeda 0.06s).
-  - Angka KPI: *count-up* saat pertama tampil.
-  - Ganti tab/halaman: fade + geser kecil, tanpa layout shift.
-  - Hasil prediksi/kompensasi: muncul dengan *spring* ringan agar terasa sebagai "jawaban".
+- Pola standar (disesuaikan dengan hallmark: **satu "reveal" per halaman**, konten tetap terlihat tanpa JavaScript):
+  - **Beranda:** satu-satunya animasi besar adalah intro *Cara Kerja* di bawah — ini *signature* halaman versi hallmark.
+  - **Dashboard & halaman kerja:** konten langsung tampil, **tanpa** stagger masuk dan **tanpa** *count-up* angka (angka count-up sempat menampilkan nilai palsu dan kosong kalau JS mati). Animasi hanya untuk perubahan state: hover, tooltip, ganti filter/tab (fade + geser kecil, tanpa layout shift).
+  - Hasil prediksi/kompensasi: muncul dengan *spring* ringan agar terasa sebagai "jawaban" (reveal satu-satunya di halaman itu).
 
 ### Intro "Cara Kerja Aplikasi" (halaman awal)
 - Animasi alur 7 langkah: Data mentah BTS → Colab/Parquet → Fitur & label → Training → Ekspor ONNX & Supabase → Next.js/Vercel → Pengguna.
@@ -131,8 +147,25 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-sans",
 - Semua fitur bisa dipakai dengan keyboard.
 - Dark mode didukung (`next-themes`, class `dark`), kontras dicek ulang di dark.
 
+## 11. Floor hallmark (tidak bisa ditawar)
+
+Ringkasan aturan dasar hallmark yang belum tercakup di atas:
+
+- `overflow-x: clip` pada `html` dan `body` (bukan `hidden`, jangan `100vw`).
+- Track grid berisi gambar pakai `minmax(0, 1fr)`; judul besar diberi `overflow-wrap: break-word; min-width: 0`.
+- `:focus-visible` di semua elemen interaktif, muncul instan (tanpa transisi).
+- Jangan `transition: all`.
+- Hero beranda: judul ≤ 7 kata, satu kalimat ≤ 12 kata, dan tombol aksi — semuanya terlihat di layar 1280×800 tanpa scroll.
+- ±80 kata per layar; beranda maksimal ±450 kata total.
+- Container dibatasi dan di tengah: di layar 1920px hanya margin yang melebar.
+- Tidak ada gradien ungu→biru, kartu di dalam kartu, emoji sebagai ikon, atau gambar jendela browser palsu.
+- Baris pertama CSS utama (`globals.css`) = **stamp hallmark** + baris kritik + daftar *waive*.
+- Sebelum merge halaman baru: `node ~/.claude/skills/hallmark/scripts/sloplint.mjs --url http://localhost:3000/<route> --render --scope app` (dashboard/prediksi) atau tanpa `--scope app` (beranda). Semua `FAIL` diperbaiki; `REFLEX` diperbaiki atau di-*waive* dengan alasan.
+
 ## Checklist sebelum merge
 
+- [ ] Halaman baru dibangun dengan `/hallmark` dan `sloplint` bersih (0 FAIL)
+- [ ] Tidak ada eyebrow / label kapital berjarak / meta bertitik tengah
 - [ ] Tidak ada hex langsung di komponen, semua lewat token
 - [ ] Hanya satu tombol gold per layar; teks tombol gold/orange berwarna navy
 - [ ] Font Plus Jakarta Sans terpasang via `next/font`
