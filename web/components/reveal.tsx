@@ -8,7 +8,7 @@ const EASE_OUT = [0.2, 0.7, 0.2, 1] as const;
 
 /**
  * Gerak halaman dengan motion.dev, sesuai hallmark craft §5:
- * - .flap: masuknya papan angka di hero saat halaman dibuka (sekali).
+ * - .hero-cell: sel papan hero muncul berurutan saat halaman dibuka (sekali).
  * - [data-reveal]: satu pola reveal per halaman; anak [data-reveal-item] muncul berurutan saat grupnya terlihat.
  * Tanpa JavaScript atau dengan reduced motion, CSS tidak menyembunyikan apa pun (globals.css).
  */
@@ -17,9 +17,9 @@ export function RevealObserver() {
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const flaps = document.querySelectorAll<HTMLElement>(".flap");
-    if (flaps.length)
-      animate(flaps, { opacity: [0, 1], rotateX: [-90, 0] }, { duration: 0.42, delay: stagger(0.045, { startDelay: 0.15 }), ease: EASE_OUT });
+    const cells = document.querySelectorAll<HTMLElement>(".hero-cell");
+    if (cells.length)
+      animate(cells, { opacity: [0, 1], scale: [0.7, 1] }, { duration: 0.42, delay: stagger(0.03, { startDelay: 0.15 }), ease: EASE_OUT });
 
     const stops = [...document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-seen)")].map((group) =>
       inView(

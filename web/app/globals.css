@@ -89,14 +89,11 @@ p {
    CSS hanya menyiapkan keadaan awal, dan hanya di bawah .js tanpa reduced motion,
    jadi tanpa JavaScript semuanya tetap terlihat. */
 @media (prefers-reduced-motion: no-preference) {
-  .js .flap,
+  .js .hero-cell,
   .js [data-reveal]:not(.is-seen) [data-reveal-item],
   .js [data-reveal]:not(.is-seen):not(:has([data-reveal-item])) {
     opacity: 0;
   }
-}
-.flap {
-  transform-origin: 50% 50%;
 }
 
 /* nomor langkah beranda: berisi saat kartunya terlihat */

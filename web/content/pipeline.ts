@@ -109,12 +109,18 @@ export const STEPS: Step[] = [
     ],
     why: [
       "Kelas inilah yang ingin ditebak model, karena setiap kelas punya kewajiban kompensasi yang berbeda bagi maskapai.",
+      "Kenapa data Amerika diberi kelas aturan Indonesia? Penelitian ini ingin tahu cara terbaik menebak kategori kompensasi PM 89/2015, tetapi data per penerbangan Indonesia tidak dibuka untuk umum. Data BTS dipakai sebagai studi kasus untuk menguji metodenya.",
+      "Cara ini masuk akal karena kelas PM 89/2015 hanya ditentukan oleh lama delay dalam menit. Pasal 4 menghitung delay dari jadwal berangkat sampai pesawat benar-benar berangkat, dan BTS mengukur kolom delay keberangkatan dengan cara yang sama: selisih jam jadwal dan jam pesawat meninggalkan gerbang.",
       "Pekerjaan ini memakai DuckDB, alat yang bisa menjalankan perintah SQL langsung ke file Parquet tanpa memuat 20 juta baris ke memori sekaligus.",
     ],
     facts: [
       ["Dikeluarkan", `${num(stats.ingest.cancelled + stats.ingest.diverted)} penerbangan`],
       ["Delay minimal 30 menit", `${dec(stats.eda.pct_delay30, 2)}%`],
       ["Kelas 5", `${dec(stats.eda.class_pct["5"], 2)}% penerbangan`],
+    ],
+    limits: [
+      "Penumpang di Amerika Serikat tidak menerima kompensasi PM 89/2015. Kelas di sini hanya label untuk penelitian.",
+      "Pola delay di Indonesia (cuaca, kepadatan bandara, maskapai) berbeda, jadi model ini belum bisa langsung dipakai untuk penerbangan Indonesia. Model perlu dilatih ulang kalau data Indonesia tersedia.",
     ],
   },
   {

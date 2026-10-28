@@ -10,7 +10,7 @@ const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakart
 export const metadata: Metadata = {
   metadataBase: new URL("https://penerbangan-bigdata.vercel.app"),
   title: { default: "Penerbangan Big Data", template: "%s | Penerbangan Big Data" },
-  description: "Analitik keterlambatan dan prediksi kategori kompensasi PM 89/2015 dari 20,9 juta penerbangan.",
+  description: "Regresi atau klasifikasi? 16 model diuji pada 20,9 juta penerbangan untuk menebak kategori kompensasi delay PM 89/2015.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

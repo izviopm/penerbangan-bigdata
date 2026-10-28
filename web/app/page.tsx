@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { LineChart } from "@/components/charts";
+import { HeroBoard } from "@/components/hero-board";
 import { ModelSwitcher, type ModelView } from "@/components/model-switcher";
 import { Pipeline } from "@/components/pipeline";
 import stats from "@/content/pipeline-stats.json";
 import { delayByHour, getHourDow, getModelResults } from "@/lib/data";
-import { dec, juta, num, pct } from "@/lib/format";
+import { dec, juta, pct } from "@/lib/format";
 import { PM89 } from "@/lib/pm89";
 
 // OTP sektor transportasi udara Indonesia, Laporan Kinerja Ditjen Perhubungan Udara 2023 (Kemenhub, 2024)
@@ -17,14 +18,6 @@ const btnOutline =
 const btnOnDark =
   "inline-flex min-h-12 items-center rounded-lg border border-primary-foreground px-6 font-semibold text-primary-foreground transition-colors duration-[var(--dur-short)] hover:bg-foreground";
 
-// papan keberangkatan di hero: semua angka dari pipeline-stats.json
-const BOARD: [string, string][] = [
-  ["Periode", "Jan 2023 sampai Des 2025"],
-  ["Maskapai", num(stats.eda.airlines)],
-  ["Bandara asal", num(stats.eda.origins)],
-  ["Delay 30 menit atau lebih", `${dec(stats.eda.pct_delay30, 2)}%`],
-  ["Model diuji", num(stats.model.n_models)],
-];
 
 export default async function Home() {
   const [hourDow, models] = await Promise.all([getHourDow(), getModelResults()]);
@@ -43,14 +36,14 @@ export default async function Home() {
 
   return (
     <>
-      {/* Hero: pita biru tua dengan papan keberangkatan berisi angka asli */}
+      {/* Hero: pertanyaan paper di kiri, jawabannya dari data uji di kanan */}
       <section className="bg-primary text-primary-foreground">
-        <div className="mx-auto grid max-w-site items-center gap-12 px-4 py-16 md:px-8 md:py-24 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+        <div className="mx-auto grid max-w-site items-center gap-12 px-4 py-16 md:px-8 md:py-24 lg:grid-cols-[minmax(0,5fr)_minmax(0,6fr)]">
           <div className="min-w-0">
             <h1 className="max-w-[14ch] text-5xl font-extrabold leading-[1.05] tracking-[-0.03em] md:text-7xl">
-              Membaca delay dari {juta(stats.ingest.rows)} penerbangan
+              Regresi atau klasifikasi untuk delay pesawat?
             </h1>
-            <p className="mt-6 max-w-xl text-xl">Website ini menebak kategori delay pesawat menurut aturan kompensasi PM 89/2015.</p>
+            <p className="mt-6 max-w-xl text-xl">Kami menguji 16 model pada {juta(stats.ingest.rows)} penerbangan domestik Amerika Serikat.</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link href="/prediksi" className={btnPrimary}>
                 Coba prediksi
@@ -60,38 +53,7 @@ export default async function Home() {
               </Link>
             </div>
           </div>
-
-          <figure className="min-w-0 rounded-2xl bg-foreground p-5 md:p-7">
-            <figcaption className="text-sm">Penerbangan domestik Amerika Serikat yang dianalisis</figcaption>
-            <p className="mt-4 flex gap-0.5 font-extrabold [perspective:240px] sm:gap-1 tabular-nums text-gold" aria-label={num(stats.ingest.rows)}>
-              {num(stats.ingest.rows)
-                .split("")
-                .map((c, i) =>
-                  c === "." ? (
-                    <span key={i} aria-hidden className="self-end text-xl md:px-0.5 md:text-4xl">
-                      .
-                    </span>
-                  ) : (
-                    <span
-                      key={i}
-                      aria-hidden
-                      className="flap grid h-11 w-7 place-items-center rounded-md bg-primary text-2xl sm:h-12 sm:w-8 sm:text-3xl md:h-16 md:w-11 md:text-5xl"
-                     
-                    >
-                      {c}
-                    </span>
-                  ),
-                )}
-            </p>
-            <dl className="mt-6 divide-y divide-primary">
-              {BOARD.map(([k, v]) => (
-                <div key={k} className="flex items-baseline justify-between gap-4 py-2.5">
-                  <dt className="text-sm">{k}</dt>
-                  <dd className="text-right font-semibold tabular-nums text-gold">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </figure>
+          <HeroBoard a={views[0]} b={views[1]} />
         </div>
       </section>
 
@@ -155,8 +117,8 @@ export default async function Home() {
       {/* Switcher: pendekatan A vs B */}
       <section className="py-20 md:py-28">
         <div className="mx-auto max-w-site px-4 md:px-8">
-          <h2 className="max-w-[24ch] text-4xl font-extrabold tracking-[-0.02em] text-foreground md:text-5xl">Hanya satu pendekatan menangkap kelas 5</h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Bandingkan recall per kelas dua model XGBoost terbaik dari 16 model yang diuji.</p>
+          <h2 className="max-w-[24ch] text-4xl font-extrabold tracking-[-0.02em] text-foreground md:text-5xl">Detail dua model terbaik</h2>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Akurasi, macro F1, dan recall per kelas untuk XGBoost regresi dan XGBoost klasifikasi berbobot.</p>
           <div className="mt-12">
             <ModelSwitcher views={views} />
           </div>
@@ -167,7 +129,12 @@ export default async function Home() {
       <section className="border-t border-border bg-card/60 py-20 md:py-28">
         <div className="mx-auto max-w-site px-4 md:px-8">
           <h2 className="max-w-[24ch] text-4xl font-extrabold tracking-[-0.02em] text-foreground md:text-5xl">Kategori kompensasi PM 89/2015</h2>
-          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">Kelas 1 sampai 5 mengikuti Pasal 3 dan Pasal 9. Kelas 0 kami tambahkan untuk delay di bawah 30 menit.</p>
+          <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+            Kelas 1 sampai 5 mengikuti Pasal 3 dan Pasal 9. Kelas 0 kami tambahkan untuk delay di bawah 30 menit.{" "}
+            <Link href="/cara-kerja#beri-kelas" className="font-semibold text-primary underline underline-offset-4 hover:text-foreground">
+              Kenapa aturan Indonesia untuk data Amerika?
+            </Link>
+          </p>
           <div className="mt-12 overflow-x-auto">
             <table className="w-full min-w-[40rem] text-left">
               <thead>
