@@ -4,7 +4,7 @@ import { Highlight, HighlightItem } from "@animate-ui/react/primitives/effects/h
 import { useEffect, useRef, useState } from "react";
 
 /** Bar langkah /cara-kerja yang menempel: penanda animate-ui bergeser ke bab yang sedang dibaca. */
-export function StepNav({ steps }: { steps: { id: string; title: string }[] }) {
+export function StepNav({ steps }: { steps: { id: string; title: string; num?: number }[] }) {
   const [active, setActive] = useState(steps[0].id);
   const list = useRef<HTMLOListElement>(null);
 
@@ -27,10 +27,10 @@ export function StepNav({ steps }: { steps: { id: string; title: string }[] }) {
   }, [steps]);
 
   return (
-    <nav aria-label="Langkah" className="sticky top-0 z-40 border-b border-border bg-background">
+    <nav aria-label="Langkah" className="sticky top-0 z-40 h-15 border-b border-border bg-background">
       <ol ref={list} className="relative mx-auto flex max-w-site gap-1 overflow-x-auto px-4 py-2 md:px-8">
         <Highlight value={active} controlledItems hover={false} click={false} className="inset-0 rounded-lg bg-primary" transition={{ type: "tween", duration: 0.22, ease: [0.2, 0.7, 0.2, 1] }}>
-          {steps.map((s, i) => (
+          {steps.map((s) => (
             <HighlightItem key={s.id} value={s.id} as="li" className="shrink-0">
               <a
                 href={`#${s.id}`}
@@ -39,7 +39,7 @@ export function StepNav({ steps }: { steps: { id: string; title: string }[] }) {
                   active === s.id ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <span className="tabular-nums">{i + 1}</span>
+                {s.num !== undefined && <span className="tabular-nums">{s.num}</span>}
                 {s.title}
               </a>
             </HighlightItem>

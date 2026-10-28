@@ -79,6 +79,7 @@ Rumus kelas kompensasi PM 89/2015:
 ### F1. Intro "Cara Kerja Aplikasi" (wajib, P0)
 Enam langkah dari data BTS sampai website, ditulis untuk orang awam (revisi 28 Okt 2026: animasi otomatis terlalu cepat dibaca, langkah "Anda" dihapus).
 - **Beranda:** linimasa 6 langkah yang muncul mengikuti scroll (garis terisi saat digulir). Setiap langkah: judul, angka nyata, satu kalimat, dan tautan ke penjelasannya. Tidak ada autoplay.
+- **Arsitektur sistem di `/cara-kerja`** (`web/content/architecture.ts`): BTS → Google Colab (notebook Python 01–04) → Google Drive, Supabase, GitHub → Vercel → browser. Di desktop panelnya menempel dan scroll menggerakkan data (motion.dev); di HP tampil statis. Ada glosarium istilah (Python, notebook, Colab, Supabase, Vercel).
 - **Halaman `/cara-kerja`:** satu bab per langkah berisi diagram alur beranimasi, "Apa yang dikerjakan", "Kenapa begini" (alasan memilih BTS, Parquet, Google Drive, Supabase, 16 model, ONNX), fakta angka, dan batasan.
 - Semua singkatan dijelaskan saat pertama muncul (mis. BTS = Bureau of Transportation Statistics).
 - Hormati `prefers-reduced-motion` dan tetap terbaca tanpa JavaScript: tampilkan semua langkah statis tanpa animasi.

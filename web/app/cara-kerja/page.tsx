@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Architecture } from "@/components/architecture";
 import { FlowDiagram } from "@/components/flow-diagram";
 import { StepNav } from "@/components/step-nav";
+import { GLOSSARY } from "@/content/architecture";
 import { STEPS } from "@/content/pipeline";
 
 export const metadata: Metadata = {
@@ -19,10 +21,25 @@ export default function CaraKerjaPage() {
         </p>
       </div>
 
-      <StepNav steps={STEPS.map(({ id, title }) => ({ id, title }))} />
+      <StepNav steps={[{ id: "arsitektur", title: "Arsitektur" }, ...STEPS.map(({ id, title }, i) => ({ id, title, num: i + 1 }))]} />
+
+      <section id="arsitektur" aria-label="Arsitektur sistem" className="scroll-mt-15 border-b border-border bg-card">
+        <Architecture />
+        <div className="mx-auto max-w-site px-4 pb-14 md:px-8">
+          <h3 className="text-xl font-semibold text-foreground">Istilah yang dipakai</h3>
+          <dl className="mt-4 grid gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-5">
+            {GLOSSARY.map(([term, meaning]) => (
+              <div key={term} className="min-w-0 border-t-2 border-primary pt-3">
+                <dt className="font-semibold text-primary">{term}</dt>
+                <dd className="mt-1 text-sm text-foreground">{meaning}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </section>
 
       {STEPS.map((s, i) => (
-        <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="scroll-mt-16">
+        <section key={s.id} id={s.id} aria-labelledby={`${s.id}-h`} className="scroll-mt-15">
           {/* pita biru tua: judul, ringkasan, dan diagram alur langkah ini */}
           <div className="bg-primary text-primary-foreground">
             <div className="mx-auto max-w-site px-4 py-14 md:px-8 md:py-20">
@@ -35,6 +52,14 @@ export default function CaraKerjaPage() {
                     {s.heading}
                   </h2>
                   <p className="mt-4 max-w-3xl text-lg">{s.lead}</p>
+                  <ul aria-label="Dijalankan di dan alat" className="mt-5 flex flex-wrap gap-2 text-sm">
+                    <li className="rounded-full bg-gold px-3 py-1 font-semibold text-gold-foreground">{s.where}</li>
+                    {s.stack.map((t) => (
+                      <li key={t} className="rounded-full border border-primary-foreground px-3 py-1">
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
               <div className="mt-10">

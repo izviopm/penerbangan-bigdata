@@ -2,6 +2,7 @@
 // Angka dibaca dari pipeline-stats.json yang ditulis notebook 04_export. Kalau alur data berubah,
 // ubah file ini, PRD §4, dan diagram README bersamaan.
 import stats from "@/content/pipeline-stats.json";
+import type { IconName } from "@/components/icons";
 import { dec, juta, num } from "@/lib/format";
 
 export type Step = {
@@ -16,8 +17,11 @@ export type Step = {
   heading: string;
   /** ringkasan yang selalu terlihat (±40 kata) */
   lead: string;
-  /** diagram alur di /cara-kerja: [nama, keterangan] dari kiri ke kanan */
-  flow: [name: string, note: string][];
+  /** diagram alur di /cara-kerja: [nama, keterangan, ikon] dari kiri ke kanan */
+  flow: [name: string, note: string, icon: IconName][];
+  /** di mana langkah ini dijalankan, dan alat Python/JavaScript yang dipakai */
+  where: string;
+  stack: string[];
   /** detail "Selengkapnya" */
   what: string[];
   /** kenapa begini */
@@ -40,11 +44,13 @@ export const STEPS: Step[] = [
     heading: "Data diambil dari BTS, lembaga statistik transportasi Amerika Serikat",
     lead: "BTS (Bureau of Transportation Statistics) adalah badan statistik Departemen Perhubungan Amerika Serikat. Maskapai di sana wajib melaporkan setiap penerbangannya, lalu BTS membuka datanya untuk umum.",
     flow: [
-      ["Maskapai di Amerika Serikat", "melapor setiap penerbangan"],
-      ["BTS", "mengumpulkan dan membuka data"],
-      [`${stats.ingest.months} file bulanan`, "diunduh satu per satu"],
-      ["Google Colab", "notebook 01 membaca tiap file"],
+      ["Maskapai di Amerika Serikat", "melapor setiap penerbangan", "Plane"],
+      ["BTS", "mengumpulkan dan membuka data", "Landmark"],
+      [`${stats.ingest.months} file bulanan`, "diunduh satu per satu", "Files"],
+      ["Google Colab", "notebook 01 membaca tiap file", "NotebookPen"],
     ],
+    where: "Notebook 01 di Google Colab",
+    stack: ["Python", "pandas"],
     what: [
       "BTS adalah singkatan dari Bureau of Transportation Statistics, badan statistik di bawah Departemen Perhubungan Amerika Serikat. Maskapai besar di sana wajib melaporkan setiap penerbangan domestiknya: jadwal, jam berangkat sebenarnya, dan berapa menit terlambat. BTS membuka data itu untuk umum secara gratis.",
       `BTS menyediakan unduhan per bulan. Kami mengambil ${stats.ingest.months} bulan, dari Januari 2023 sampai Desember 2025. Satu bulan berisi sekitar 250 MB tabel CSV dengan ${stats.ingest.raw_columns} kolom, sehingga totalnya sekitar 9 GB.`,
@@ -70,11 +76,13 @@ export const STEPS: Step[] = [
     heading: "Hanya kolom yang dipakai, disimpan dalam format Parquet di Google Drive",
     lead: `Dari ${stats.ingest.raw_columns} kolom, hanya ${stats.ingest.kept_columns} yang dipakai. Hasilnya disimpan sebagai file Parquet di Google Drive tim, dari sekitar 9 GB menjadi ${dec(stats.ingest.parquet_mb, 1)} MB.`,
     flow: [
-      ["Tabel CSV", `${stats.ingest.raw_columns} kolom, sekitar 9 GB`],
-      ["Pilih kolom", `${stats.ingest.kept_columns} kolom yang dipakai`],
-      ["File Parquet", "satu file per bulan"],
-      ["Google Drive", `${dec(stats.ingest.parquet_mb, 1)} MB, dipakai bersama`],
+      ["Tabel CSV", `${stats.ingest.raw_columns} kolom, sekitar 9 GB`, "Table"],
+      ["Pilih kolom", `${stats.ingest.kept_columns} kolom yang dipakai`, "Columns3"],
+      ["File Parquet", "satu file per bulan", "FileArchive"],
+      ["Google Drive", `${dec(stats.ingest.parquet_mb, 1)} MB, dipakai bersama`, "HardDrive"],
     ],
+    where: "Notebook 01 di Google Colab",
+    stack: ["pandas", "DuckDB", "Parquet"],
     what: [
       `Dari ${stats.ingest.raw_columns} kolom, kami hanya menyimpan ${stats.ingest.kept_columns}: tanggal, maskapai, bandara asal dan tujuan, jam jadwal, jarak, menit delay, serta status batal atau dialihkan.`,
       "Hasilnya disimpan dalam format Parquet, satu file per bulan, di folder Google Drive milik tim.",
@@ -98,11 +106,13 @@ export const STEPS: Step[] = [
     heading: "Penerbangan yang batal dibuang, sisanya diberi kelas kompensasi PM 89/2015",
     lead: "Penerbangan yang batal atau dialihkan dibuang. Sisanya diberi kelas PM 89/2015 menurut lama delay-nya, misalnya delay 135 menit masuk kelas 3.",
     flow: [
-      ["Semua penerbangan", juta(stats.ingest.rows)],
-      ["Buang batal & dialihkan", `${num(stats.ingest.cancelled + stats.ingest.diverted)} penerbangan`],
-      ["Hitung kelas PM 89", "dari menit delay keberangkatan"],
-      ["Siap dianalisis", `${juta(operated)} penerbangan berkelas`],
+      ["Semua penerbangan", juta(stats.ingest.rows), "Plane"],
+      ["Buang batal & dialihkan", `${num(stats.ingest.cancelled + stats.ingest.diverted)} penerbangan`, "Filter"],
+      ["Hitung kelas PM 89", "dari menit delay keberangkatan", "Tags"],
+      ["Siap dianalisis", `${juta(operated)} penerbangan berkelas`, "CheckCheck"],
     ],
+    where: "Notebook 02 di Google Colab",
+    stack: ["DuckDB", "matplotlib"],
     what: [
       `Ada ${num(stats.ingest.cancelled)} penerbangan yang batal dan ${num(stats.ingest.diverted)} yang dialihkan ke bandara lain. Keduanya dikeluarkan karena tidak punya menit delay keberangkatan. Sisanya ${num(operated)} penerbangan.`,
       "Setiap penerbangan lalu diberi kelas menurut Peraturan Menteri Perhubungan PM 89/2015. Misalnya delay 45 menit masuk kelas 1 (minuman ringan), 135 menit masuk kelas 3 (makanan berat), dan 300 menit masuk kelas 5 (ganti rugi Rp300.000). Delay di bawah 30 menit kami sebut kelas 0.",
@@ -132,11 +142,13 @@ export const STEPS: Step[] = [
     heading: "16 model diuji supaya perbandingannya adil",
     lead: "Model adalah rumus yang belajar dari data lama untuk menebak data baru. Kami menguji 16 model untuk menjawab satu pertanyaan: lebih tepat menebak menit delay, atau langsung menebak kelasnya?",
     flow: [
-      ["Sampel acak", `${num(stats.model.n_sample)} penerbangan`],
-      ["Bagi 80 : 20", "data latih dan data uji"],
-      ["16 model", "2 cara x 2 perlakuan x 4 algoritma"],
-      ["Model terpilih", "B-S4 XGBoost"],
+      ["Sampel acak", `${num(stats.model.n_sample)} penerbangan`, "Shuffle"],
+      ["Bagi 80 : 20", "data latih dan data uji", "Split"],
+      ["16 model", "2 cara x 2 perlakuan x 4 algoritma", "Brain"],
+      ["Model terpilih", "B-S4 XGBoost", "Trophy"],
     ],
+    where: "Notebook 03 di Google Colab",
+    stack: ["scikit-learn", "XGBoost"],
     what: [
       "Model adalah rumus yang belajar dari data lama untuk menebak data baru. Pertanyaan penelitian kami: lebih tepat menebak menit delay lalu mengubahnya ke kelas (cara A, regresi), atau langsung menebak kelasnya (cara B, klasifikasi)?",
       "Angka 16 berasal dari 2 cara menebak, masing-masing dengan 2 perlakuan, dikali 4 algoritma. Perlakuan cara A adalah menit asli atau menit yang dipadatkan dengan logaritma. Perlakuan cara B adalah tanpa atau dengan bobot kelas, yaitu memberi perhatian lebih pada kelas yang langka. Algoritmanya dua yang sederhana sebagai pembanding (Linear atau Logistic Regression dan Decision Tree) dan dua yang lebih kuat (Random Forest dan XGBoost).",
@@ -164,11 +176,13 @@ export const STEPS: Step[] = [
     heading: "Pekerjaan berat di Colab, hasil kecilnya dikirim ke layanan online",
     lead: `Pekerjaan berat tetap di Google Colab. Yang dikirim ke internet hanya ringkasan ${num(supabaseRows)} baris ke database Supabase dan model yang sudah dikemas ulang.`,
     flow: [
-      ["Notebook 04 di Colab", "menyiapkan hasil akhir"],
-      ["Supabase", `${num(supabaseRows)} baris ringkasan`],
-      ["Model ONNX", `${dec(stats.export.onnx_mb, 1)} MB, disimpan di GitHub`],
-      ["Vercel", "membangun website dari GitHub"],
+      ["Notebook 04 di Colab", "menyiapkan hasil akhir", "NotebookPen"],
+      ["Supabase", `${num(supabaseRows)} baris ringkasan`, "Database"],
+      ["Model ONNX", `${dec(stats.export.onnx_mb, 1)} MB, disimpan di GitHub`, "Package"],
+      ["Vercel", "membangun website dari GitHub", "Rocket"],
     ],
+    where: "Notebook 04 di Google Colab",
+    stack: ["onnxmltools", "psycopg2", "Supabase"],
     what: [
       `Supabase adalah database online. Ke sana kami hanya mengirim ringkasan: angka per bulan dan maskapai, per bulan dan bandara, serta per jam dan hari, totalnya ${num(supabaseRows)} baris. Ringkasan ini cukup untuk semua grafik di dashboard.`,
       `Model dibuat dengan Python, sedangkan website berjalan dengan JavaScript. Karena itu model diubah ke format ONNX, format standar yang bisa dibaca banyak bahasa pemrograman, mirip PDF untuk dokumen. Ukurannya ${dec(stats.export.onnx_mb, 1)} MB.`,
@@ -195,11 +209,13 @@ export const STEPS: Step[] = [
     heading: "Website membaca ringkasan dan menjalankan model saat dibutuhkan",
     lead: "Dashboard membaca ringkasan dari Supabase. Halaman prediksi menjalankan model saat Anda menekan tombol, lalu menampilkan kelas PM 89/2015 dan hak kompensasinya.",
     flow: [
-      ["Anda", "memilih rute, tanggal, dan jam"],
-      ["Server Vercel", "menyusun fitur penerbangan"],
-      ["Model ONNX", "memberi skor setiap kelas"],
-      ["Hasil", "kelas PM 89 dan hak penumpang"],
+      ["Anda", "memilih rute, tanggal, dan jam", "User"],
+      ["Server Vercel", "menyusun fitur penerbangan", "Server"],
+      ["Model ONNX", "memberi skor setiap kelas", "Cpu"],
+      ["Hasil", "kelas PM 89 dan hak penumpang", "BadgeCheck"],
     ],
+    where: "Website di Vercel",
+    stack: ["Next.js", "onnxruntime-web", "Supabase"],
     what: [
       "Website ini dibuat dengan Next.js dan berjalan di Vercel. Halaman dashboard mengambil ringkasan dari Supabase lalu menggambar grafiknya.",
       "Di halaman prediksi, Anda memilih maskapai, rute, tanggal, dan jam. Server menjalankan model ONNX dan menampilkan kelas PM 89/2015 yang paling mungkin beserta hak kompensasinya.",
